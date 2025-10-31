@@ -7,26 +7,21 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { useToast } from "@/components/ui/use-toast"
-import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { z } from "zod"
 import { Loader2 } from "lucide-react"
 
-const formSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-  email: z.string().email({ message: "Please enter a valid email address." }),
-  subject: z.string().min(5, { message: "Subject must be at least 5 characters." }),
-  message: z.string().min(10, { message: "Message must be at least 10 characters." }),
-})
-
-type FormValues = z.infer<typeof formSchema>
+type FormValues = {
+  name: string
+  email: string
+  subject: string
+  message: string
+}
 
 export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
 
   const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       email: "",
@@ -72,34 +67,40 @@ export function ContactForm() {
             <Label htmlFor="name">
               Name <span className="text-destructive">*</span>
             </Label>
-            <Input id="name" {...form.register("name")} aria-describedby="name-error" />
-            {form.formState.errors.name && (
-              <p id="name-error" className="text-sm text-destructive">
-                {form.formState.errors.name.message}
-              </p>
-            )}
+            <Input
+              id="name"
+              {...form.register("name", { required: true, minLength: 2 })}
+              placeholder="Your name"
+              required
+              minLength={2}
+              aria-describedby="name-error"
+            />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="email">
               Email <span className="text-destructive">*</span>
             </Label>
-            <Input id="email" type="email" {...form.register("email")} aria-describedby="email-error" />
-            {form.formState.errors.email && (
-              <p id="email-error" className="text-sm text-destructive">
-                {form.formState.errors.email.message}
-              </p>
-            )}
+            <Input
+              id="email"
+              type="email"
+              {...form.register("email", { required: true })}
+              placeholder="your.email@example.com"
+              required
+              aria-describedby="email-error"
+            />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="subject">
               Subject <span className="text-destructive">*</span>
             </Label>
-            <Input id="subject" {...form.register("subject")} aria-describedby="subject-error" />
-            {form.formState.errors.subject && (
-              <p id="subject-error" className="text-sm text-destructive">
-                {form.formState.errors.subject.message}
-              </p>
-            )}
+            <Input
+              id="subject"
+              {...form.register("subject", { required: true, minLength: 5 })}
+              placeholder="How can I help you?"
+              required
+              minLength={5}
+              aria-describedby="subject-error"
+            />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="message">
@@ -107,15 +108,13 @@ export function ContactForm() {
             </Label>
             <Textarea
               id="message"
-              {...form.register("message")}
+              {...form.register("message", { required: true, minLength: 10 })}
+              placeholder="Your message..."
               className="min-h-[120px]"
+              required
+              minLength={10}
               aria-describedby="message-error"
             />
-            {form.formState.errors.message && (
-              <p id="message-error" className="text-sm text-destructive">
-                {form.formState.errors.message.message}
-              </p>
-            )}
           </div>
           <Button type="submit" className="w-full bg-primary hover:bg-primary/90" disabled={isSubmitting}>
             {isSubmitting ? (
