@@ -746,11 +746,11 @@ export default function Home() {
                   </div>
                   <div className="flex items-center gap-3">
                     <Linkedin className="h-5 w-5 text-primary" />
-                    <div className="text-sm">linkedin.com/in/anirudhmehandru</div>
+                    <div className="text-sm">linkedin.com/in/anirudh-mehandru</div>
                   </div>
                   <div className="flex items-center gap-3">
                     <Github className="h-5 w-5 text-primary" />
-                    <div className="text-sm">github.com/anirudhmehandru-security</div>
+                    <div className="text-sm">github.com/Anirudhx7</div>
                   </div>
                 </CardContent>
               </Card>
